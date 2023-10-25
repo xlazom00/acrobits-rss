@@ -12,10 +12,8 @@ std::shared_ptr<RssFeedData> RssXmlReader::getFeedData()
     return m_feedData;
 }
 
-void RssXmlReader::beginReading()
+void RssXmlReader::parseData()
 {
-
-
     while(m_xmlReader.readNextStartElement())
     {
         auto name = m_xmlReader.name();

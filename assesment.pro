@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     clickablelabel.cpp \
     listwidget.cpp \
+    loggerservice.cpp \
     main.cpp \
     mainwindow.cpp \
     rssfeeddata.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
 HEADERS += \
     clickablelabel.h \
     listwidget.h \
+    loggerservice.h \
     mainwindow.h \
     rssfeeddata.h \
     rssitemdelegate.h \

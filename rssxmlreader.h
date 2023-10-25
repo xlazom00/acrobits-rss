@@ -10,7 +10,7 @@ class RssXmlReader
 {
 public:
     RssXmlReader(const QByteArray & data);
-    void beginReading();
+    void parseData();
     std::shared_ptr<RssFeedData> getFeedData();
 
 private:

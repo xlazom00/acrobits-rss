@@ -10,6 +10,7 @@
 #include <memory>
 
 class RssFeedData;
+class LoggerService;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -39,5 +40,7 @@ private:
     QScopedPointer<QNetworkReply, QScopedPointerDeleteLater> m_reply;
 
     QTimer m_timer;
+
+    std::shared_ptr<LoggerService> m_loggerService;
 };
 #endif // MAINWINDOW_H

@@ -3,6 +3,7 @@
 #include "rssxmlreader.h"
 #include "rssitemdelegate.h"
 #include "rssfeeddata.h"
+#include "loggerservice.h"
 
 #include <QDebug>
 #include <QErrorMessage>
@@ -20,13 +21,20 @@ MainWindow::MainWindow(QWidget *parent)
 
     // refresh every 1 min
     m_timer.setInterval( 1*60*1000);
+
+    //m_timer.setInterval( 5 * 1000);
     QObject::connect(&m_timer, &QTimer::timeout, this, &MainWindow::refreshRssFeed);
     m_timer.start();
+
+    m_loggerService = std::make_shared<LoggerService>();
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+
+    m_loggerService.reset();
 }
 
 void MainWindow::onReadPushButtonClicked()
@@ -36,7 +44,8 @@ void MainWindow::onReadPushButtonClicked()
 
 void MainWindow::refreshRssFeed()
 {
-    qDebug() << "refreshRssFeed";
+    qDebug() << QString("%1 refreshRssFeed").arg(QDateTime::currentDateTimeUtc().toString());
+    m_loggerService->writeMessage(QString("%1 refreshRssFeed").arg(QDateTime::currentDateTimeUtc().toString()));
 
     // check if there is pending request
     if( m_reply != nullptr)
@@ -54,7 +63,7 @@ void MainWindow::onReplyFinished()
         auto responseData = m_reply->readAll();
 
         RssXmlReader rssXmlReader(responseData);
-        rssXmlReader.beginReading();
+        rssXmlReader.parseData();
         auto feedData = rssXmlReader.getFeedData();
         if( feedData->isEmpty())
         {
@@ -63,6 +72,7 @@ void MainWindow::onReplyFinished()
         }
         else
         {
+            m_loggerService->writeMessage(QString("%1 new date from rss").arg(QDateTime::currentDateTimeUtc().toString()));
             updateUi(feedData);
         }
     }
